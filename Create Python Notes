@@ -1,0 +1,85 @@
+import json
+import os
+from datetime import datetime
+
+NOTES_FILE = "notes.json"
+
+def load_notes():
+    if os.path.exists(NOTES_FILE):
+        with open(NOTES_FILE, "r") as f:
+            return json.load(f)
+    else:
+        return []
+
+def save_notes(notes):
+    with open(NOTES_FILE, "w") as f:
+        json.dump(notes, f, indent=4)
+
+def add_note(title, body):
+    notes = load_notes()
+    timestamp = datetime.now().isoformat()
+    note = {"id": len(notes) + 1, "title": title, "body": body, "timestamp": timestamp}
+    notes.append(note)
+    save_notes(notes)
+    print("Note added successfully.")
+
+def read_notes():
+    notes = load_notes()
+    for note in notes:
+        print(f"ID: {note['id']}, Title: {note['title']}, Timestamp: {note['timestamp']}")
+        print(f"Body: {note['body']}\n")
+
+def edit_note(note_id, new_title, new_body):
+    notes = load_notes()
+    for note in notes:
+        if note['id'] == note_id:
+            note['title'] = new_title
+            note['body'] = new_body
+            note['timestamp'] = datetime.now().isoformat()
+            save_notes(notes)
+            print("Note edited successfully.")
+            return
+    print("Note not found.")
+
+def delete_note(note_id):
+    notes = load_notes()
+    for note in notes:
+        if note['id'] == note_id:
+            notes.remove(note)
+            save_notes(notes)
+            print("Note deleted successfully.")
+            return
+    print("Note not found.")
+
+def main():
+    while True:
+        print("\n1. Add a note")
+        print("2. Read notes")
+        print("3. Edit a note")
+        print("4. Delete a note")
+        print("5. Exit")
+
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            title = input("Enter note title: ")
+            body = input("Enter note body: ")
+            add_note(title, body)
+        elif choice == "2":
+            read_notes()
+        elif choice == "3":
+            note_id = int(input("Enter note ID to edit: "))
+            new_title = input("Enter new title: ")
+            new_body = input("Enter new body: ")
+            edit_note(note_id, new_title, new_body)
+        elif choice == "4":
+            note_id = int(input("Enter note ID to delete: "))
+            delete_note(note_id)
+        elif choice == "5":
+            print("Exiting...")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()
