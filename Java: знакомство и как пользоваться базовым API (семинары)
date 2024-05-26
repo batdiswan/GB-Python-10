@@ -1,0 +1,70 @@
+public class PhoneBookEntry {
+
+    private String name;
+    private List<String> phoneNumbers;
+
+    public PhoneBookEntry(String name) {
+        this.name = name;
+        this.phoneNumbers = new ArrayList<>();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void addPhoneNumber(String phoneNumber) {
+        phoneNumbers.add(phoneNumber);
+    }
+
+    public List<String> getPhoneNumbers() {
+        return phoneNumbers;
+    }
+
+    @Override
+    public String toString() {
+        return name + ": " + phoneNumbers;
+    }
+}
+public class PhoneBook {
+
+    private HashMap<String, PhoneBookEntry> phoneBook;
+
+    public PhoneBook() {
+        phoneBook = new HashMap<>();
+    }
+
+    public void addEntry(String name, String phoneNumber) {
+        PhoneBookEntry entry = phoneBook.get(name);
+        if (entry == null) {
+            entry = new PhoneBookEntry(name);
+            phoneBook.put(name, entry);
+        }
+        entry.addPhoneNumber(phoneNumber);
+    }
+
+    public List<PhoneBookEntry> getEntriesSortedByPhoneNumbersCount() {
+        List<PhoneBookEntry> entries = new ArrayList<>(phoneBook.values());
+        Collections.sort(entries, (o1, o2) -> o2.getPhoneNumbers().size() - o1.getPhoneNumbers().size());
+        return entries;
+    }
+
+    public void printEntries() {
+        for (PhoneBookEntry entry : getEntriesSortedByPhoneNumbersCount()) {
+            System.out.println(entry);
+        }
+    }
+}
+public class Main {
+
+    public static void main(String[] args) {
+        PhoneBook phoneBook = new PhoneBook();
+
+        phoneBook.addEntry("Иван", "+79001234567");
+        phoneBook.addEntry("Петр", "+79002345678");
+        phoneBook.addEntry("Иван", "+79003456789");
+        phoneBook.addEntry("Мария", "+79004567890");
+        phoneBook.addEntry("Петр", "+79005678901");
+
+        phoneBook.printEntries();
+    }
+}
