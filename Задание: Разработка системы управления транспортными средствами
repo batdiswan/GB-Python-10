@@ -1,0 +1,147 @@
+public abstract class Vehicle {
+
+    private int id;
+    private String brand;
+    private String model;
+    private int year;
+
+    public Vehicle(int id, String brand, String model, int year) {
+        this.id = id;
+        this.brand = brand;
+        this.model = model;
+        this.year = year;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public abstract void startEngine();
+
+    public abstract void stopEngine();
+
+    public abstract void accelerate(int speed);
+
+    public abstract void brake();
+
+    public abstract void displayInfo();
+}
+public interface Flyable {
+
+    void takeOff();
+
+    void land();
+}
+public interface Swimmable {
+
+    void startSwimming();
+
+    void stopSwimming();
+}
+public class Car extends Vehicle {
+
+    private int fuelCapacity;
+    private int currentFuelLevel;
+
+    public Car(int id, String brand, String model, int year, int fuelCapacity) {
+        super(id, brand, model, year);
+        this.fuelCapacity = fuelCapacity;
+        this.currentFuelLevel = fuelCapacity;
+    }
+
+    @Override
+    public void startEngine() {
+        System.out.println("Запуск двигателя автомобиля...");
+    }
+
+    @Override
+    public void stopEngine() {
+        System.out.println("Остановка двигателя автомобиля...");
+    }
+
+    @Override
+    public void accelerate(int speed) {
+        System.out.println("Увеличение скорости автомобиля на " + speed + "...");
+    }
+
+    @Override
+    public void brake() {
+        System.out.println("Прекращение движения автомобиля...");
+    }
+
+    public void refuel(int liters) {
+        System.out.println("Заправка автомобиля на " + liters + " литров...");
+        currentFuelLevel += liters;
+        if (currentFuelLevel > fuelCapacity) {
+            currentFuelLevel = fuelCapacity;
+        }
+    }
+
+    @Override
+    public void displayInfo() {
+        System.out.println("Информация об автомобиле:");
+        System.out.println("ID: " + getId());
+        System.out.println("Марка: " + getBrand());
+        System.out.println("Модель: " + getModel());
+        System.out.println("Год выпуска: " + getYear());
+        System.out.println("Ёмкость топливного бака: " + fuelCapacity);
+        System.out.println("Текущий уровень топлива: " + currentFuelLevel);
+    }
+}
+public class Aircraft extends Vehicle implements Flyable {
+
+    private int maxAltitude;
+    private boolean isFlying;
+
+    public Aircraft(int id, String brand, String model, int year, int maxAltitude) {
+        super(id, brand, model, year);
+        this.maxAltitude = maxAltitude;
+        this.isFlying = false;
+    }
+
+    @Override
+    public void startEngine() {
+        System.out.println("Запуск двигателя самолета...");
+    }
+
+    @Override
+    public void stopEngine() {
+        System.out.println("Остановка двигателя самолета...");
+    }
+
+    @Override
+    public void takeOff() {
+        if (!isFlying) {
+            System.out.println("Взлет самолета...");
+            isFlying = true;
+        }
+    }
+
+    @Override
+    public void land() {
+        if (isFlying) {
+            System.out.println("Посадка самолета...");
+            isFlying = false;
+        }
+    }
+
+    @Override
+    public void displayInfo() {
+        System.out.println("Информация о самолете:");
+        System.out.println("ID: " + getId());
+        System.out.println("Марка: " + getBrand());
+        System.out.println("Модель: " + getModel());
+        System.out.println("Год выпуска: " + getYear());
+        System.out.println("Максима
